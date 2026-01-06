@@ -1,0 +1,12 @@
+{
+  "name": "@connecto/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./validations/index.js",
+  "exports": {
+    "./validations": "./validations/index.js"
+  },
+  "dependencies": {
+    "zod": "^4.3.4"
+  }
+}
