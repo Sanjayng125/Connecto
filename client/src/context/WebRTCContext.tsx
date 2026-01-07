@@ -67,7 +67,16 @@ export const WebRTCProvider = ({ children }: WebRTCProviderProps) => {
     pc.oniceconnectionstatechange = () => {
       if (pc.iceConnectionState === "connected") {
         setActiveCall((prev) =>
-          prev ? { ...prev, state: "connected" } : null
+          prev
+            ? { ...prev, state: "connected" }
+            : {
+                participant: {
+                  username: activeCall?.participant?.username ?? peerId,
+                  userId: activeCall?.participant?.userId ?? peerId,
+                },
+                state: "connected",
+                isIncoming: false,
+              }
         );
         toast.success("Call connected!");
       } else if (pc.iceConnectionState === "disconnected") {

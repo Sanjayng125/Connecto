@@ -62,7 +62,13 @@ export const signup = asyncHandler(async (req, res) => {
       ...user,
       refreshToken: refreshToken,
       lastSeen: new Date().toISOString(),
-    })
+    }),
+    {
+      expiration: {
+        type: "EX",
+        value: 60 * 60 * 24 * 7, // 7 days in seconds
+      },
+    }
   );
 
   res.cookie("refreshToken", refreshToken, getCookieOptions());
@@ -105,7 +111,13 @@ export const login = asyncHandler(async (req, res) => {
       ...user,
       refreshToken: refreshToken,
       lastSeen: new Date().toISOString(),
-    })
+    }),
+    {
+      expiration: {
+        type: "EX",
+        value: 60 * 60 * 24 * 7, // 7 days in seconds
+      },
+    }
   );
 
   userExists.lastSeen = new Date();
@@ -130,6 +142,7 @@ export const refreshToken = asyncHandler(async (req, res) => {
   }
 
   const cached = await redis.get(`user:${decoded.userId}`);
+
   const session = cached ? JSON.parse(cached) : null;
   if (!session || session.refreshToken !== refreshToken) {
     throw badRequestError("Invalid refresh token");
@@ -137,7 +150,7 @@ export const refreshToken = asyncHandler(async (req, res) => {
 
   const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
     generateTokens({
-      userId: decoded._id.toString(),
+      userId: decoded.userId,
       username: decoded.username,
     });
 
@@ -147,7 +160,13 @@ export const refreshToken = asyncHandler(async (req, res) => {
       ...session,
       refreshToken: newRefreshToken,
       lastSeen: new Date().toISOString(),
-    })
+    }),
+    {
+      expiration: {
+        type: "EX",
+        value: 60 * 60 * 24 * 7, // 7 days in seconds
+      },
+    }
   );
 
   res.cookie("refreshToken", refreshToken, getCookieOptions());
@@ -224,7 +243,10 @@ export const updateProfile = asyncHandler(async (req, res) => {
       username: updatedUser.username,
       avatar: updatedUser.avatar,
       lastSeen: new Date().toISOString(),
-    })
+    }),
+    {
+      expiration: "KEEPTTL",
+    }
   );
 
   res.json({ user: updatedUser, message: "Profile updated" });

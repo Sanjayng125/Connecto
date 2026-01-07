@@ -1,3 +1,5 @@
+import CryptoJS from "crypto-js";
+
 export const formatTime = (dateString: string): string => {
     const date = new Date(dateString);
     const now = new Date();
@@ -36,3 +38,26 @@ export const formatDate = (dateString: string): string => {
         day: 'numeric',
     });
 }
+
+const SECRET_KEY =
+    import.meta.env.VITE_AUTH_STORE_SECRET_KEY || "auth-storage-secret-key";
+
+export const encryptData = (data: any) => {
+    try {
+        return CryptoJS.AES.encrypt(JSON.stringify(data), SECRET_KEY).toString();
+    } catch (error) {
+        console.error("Encryption error:", error);
+        return null;
+    }
+};
+
+export const decryptData = (cipherText: string) => {
+    try {
+        const bytes = CryptoJS.AES.decrypt(cipherText, SECRET_KEY);
+        const parsed = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+        return parsed;
+    } catch (error) {
+        console.error("Decryption error:", error);
+        return null;
+    }
+};

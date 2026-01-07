@@ -32,7 +32,12 @@ export const handleSocket = (server) => {
   io.on("connection", async (socket) => {
     const userId = socket.userId;
 
-    await redis.set(`socket:${userId}`, socket.id);
+    await redis.set(`socket:${userId}`, socket.id, {
+      expiration: {
+        type: "EX",
+        value: 60 * 60 * 24 * 7, // 7 days in seconds
+      },
+    });
 
     socket.on("call:initiate", async ({ to }) => {
       const targetSocket = await redis.get(`socket:${to}`);
