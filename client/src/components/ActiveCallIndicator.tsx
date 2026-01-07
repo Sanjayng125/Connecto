@@ -3,9 +3,8 @@ import { useWebRTC } from "../context/WebRTCContext";
 import { useState, useEffect } from "react";
 
 export const ActiveCallIndicator = () => {
-  const { activeCall, endCall } = useWebRTC();
+  const { activeCall, endCall, toggleMute, isMuted } = useWebRTC();
   const [duration, setDuration] = useState(0);
-  const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
     if (activeCall?.state === "connected") {
@@ -17,21 +16,6 @@ export const ActiveCallIndicator = () => {
       setDuration(0);
     }
   }, [activeCall?.state]);
-
-  const toggleMute = () => {
-    const audioTracks = document.querySelectorAll("audio");
-    audioTracks.forEach((audio: any) => {
-      if (audio.srcObject) {
-        const tracks = audio.srcObject.getTracks();
-        tracks.forEach((track: MediaStreamTrack) => {
-          if (track.kind === "audio") {
-            track.enabled = !track.enabled;
-          }
-        });
-      }
-    });
-    setIsMuted(!isMuted);
-  };
 
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);

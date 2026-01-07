@@ -6,7 +6,7 @@ const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
 function generateTokens(payload) {
   const accessToken = jwt.sign({ ...payload }, ACCESS_TOKEN_SECRET, {
-    expiresIn: "15m",
+    expiresIn: "2h",
   });
 
   const refreshToken = jwt.sign({ ...payload }, REFRESH_TOKEN_SECRET, {
@@ -47,3 +47,10 @@ export {
   hashPassword,
   comparePassword,
 };
+
+export const getCookieOptions = () => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+});

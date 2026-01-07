@@ -5,6 +5,6 @@ export const respondToContactRequestSchema = z.object({
 });
 
 export const updateContactSchema = z.object({
-  nickname: z.string().min(1).max(50),
+  nickname: z.string().min(1).max(50).optional(),
   isFavorite: z.boolean().optional(),
 });

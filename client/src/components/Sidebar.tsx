@@ -1,5 +1,5 @@
 import { Bell, LogOut, Phone, Settings, User, UserPlus } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useLocation, Link } from "react-router";
 import { authApi } from "../api/auth";
 import { useAuthStore } from "../store/useAuthStore";
@@ -9,6 +9,7 @@ import { useState } from "react";
 export const Sidebar = () => {
   const navigate = useNavigate();
   const { clearAuth, user } = useAuthStore();
+  const queryClient = useQueryClient();
   const pathname = useLocation().pathname;
   const isContactSelected = useLocation().pathname.startsWith("/contact/");
   const [showAvatarModal, setShowAvatarModal] = useState(false);
@@ -17,6 +18,7 @@ export const Sidebar = () => {
     mutationFn: authApi.logout,
     onSuccess: (res) => {
       clearAuth();
+      queryClient.clear();
       navigate("/login");
       toast.success(res?.message || "Logged out successfully.");
     },
@@ -95,7 +97,7 @@ export const Sidebar = () => {
           className="fixed inset-0 bg-black/40 bg-opacity-50 flex items-center justify-center z-50 p-2 md:p-4"
           onClick={() => setShowAvatarModal(false)}
         >
-          <div className="bg-white rounded-2xl max-w-md w-full p-4">
+          <div className="bg-white rounded-2xl w-full max-w-md p-4">
             <img
               src={user?.avatar?.url}
               alt="Avatar"

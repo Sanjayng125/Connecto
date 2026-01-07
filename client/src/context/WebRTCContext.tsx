@@ -16,6 +16,8 @@ interface WebRTCContextValue {
   incomingCall: IncomingCall | null;
   isIncomingCall: boolean;
   activeCall: ActiveCall | null;
+  toggleMute: () => void;
+  isMuted: boolean;
 }
 
 interface WebRTCProviderProps {
@@ -35,6 +37,7 @@ export const WebRTCProvider = ({ children }: WebRTCProviderProps) => {
   const [activeCall, setActiveCall] = useState<ActiveCall | null>(null);
   const [incomingCall, setIncomingCall] = useState<IncomingCall | null>(null);
   const [isIncomingCall, setIsIncomingCall] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
 
   const createPC = (peerId: string): RTCPeerConnection => {
     const pc = new RTCPeerConnection({
@@ -208,6 +211,17 @@ export const WebRTCProvider = ({ children }: WebRTCProviderProps) => {
     }
     setIncomingCall(null);
     setIsIncomingCall(false);
+    setIsMuted(false);
+  };
+
+  const toggleMute = () => {
+    if (localStreamRef.current) {
+      const audioTracks = localStreamRef.current.getAudioTracks();
+      audioTracks.forEach((track) => {
+        track.enabled = !track.enabled;
+      });
+      setIsMuted(!isMuted);
+    }
   };
 
   useEffect(() => {
@@ -402,6 +416,8 @@ export const WebRTCProvider = ({ children }: WebRTCProviderProps) => {
         incomingCall,
         activeCall,
         isIncomingCall,
+        toggleMute,
+        isMuted,
       }}
     >
       {children}

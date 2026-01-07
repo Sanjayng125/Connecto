@@ -46,6 +46,7 @@ const Settings = () => {
     mutationFn: authApi.logout,
     onSuccess: () => {
       clearAuth();
+      queryClient.clear();
       navigate("/login");
       toast.success("Logged out successfully");
     },
@@ -122,7 +123,7 @@ const Settings = () => {
 
   return (
     <div className="flex-1 h-full flex justify-center bg-linear-to-br from-gray-50 to-gray-100 md:p-4 overflow-y-auto">
-      <div className="w-full h-fit md:max-w-2xl bg-white md:rounded-2xl shadow-xl p-2 sm:p-6 md:p-8">
+      <div className="w-full h-fit md:max-w-2xl p-2 py-6 sm:p-6 md:p-8">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
@@ -192,7 +193,7 @@ const Settings = () => {
         </div>
 
         <div className="space-y-4 mb-8">
-          <div className="p-4 bg-gray-50 rounded-xl">
+          <div className="p-4 bg-white rounded-xl">
             <div className="flex items-center justify-between mb-2">
               <label className="text-sm font-medium text-gray-600 flex items-center gap-2">
                 <User size={16} />
@@ -245,7 +246,7 @@ const Settings = () => {
             )}
           </div>
 
-          <div className="p-4 bg-gray-50 rounded-xl">
+          <div className="p-4 bg-white rounded-xl">
             <label className="text-sm font-medium text-gray-600 flex items-center gap-2 mb-2">
               <Mail size={16} />
               Email
@@ -256,7 +257,7 @@ const Settings = () => {
             </p>
           </div>
 
-          <div className="p-4 bg-gray-50 rounded-xl">
+          <div className="p-4 bg-white rounded-xl">
             <label className="text-sm font-medium text-gray-600 flex items-center gap-2 mb-2">
               <Calendar size={16} />
               Member Since

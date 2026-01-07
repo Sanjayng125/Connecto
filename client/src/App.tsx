@@ -15,6 +15,7 @@ import NotificationsLayout from "./layouts/NotificationsLayout";
 import Notifications from "./pages/Notifications";
 import Settings from "./pages/Settings";
 import Home from "./pages/Home";
+import PublicLayout from "./layouts/PublicLayout";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,93 +48,87 @@ function App() {
 
       <BrowserRouter>
         <Routes>
-          <Route
-            index
-            path="/"
-            element={
-              <PublicRoute>
-                <Home />
-              </PublicRoute>
-            }
-          />
-
-          <Route
-            path="/signup"
-            element={
-              <PublicRoute>
-                <Signup />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
-            }
-          />
-
-          <Route element={<MainLayout />}>
-            <Route element={<ContactLayout />}>
-              <Route
-                index
-                path="/contact"
-                element={
-                  <ProtectedRoute>
-                    <Call />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/contact/:id"
-                element={
-                  <ProtectedRoute>
-                    <ContactProfile />
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
-
-            <Route element={<AddContactLayout />}>
-              <Route
-                index
-                path="/add-contact"
-                element={
-                  <ProtectedRoute>
-                    <AddContact />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/add-contact/:id"
-                element={
-                  <ProtectedRoute>
-                    <UserProfile />
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
-
-            <Route element={<NotificationsLayout />}>
-              <Route
-                path="/notifications"
-                element={
-                  <ProtectedRoute>
-                    <Notifications />
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
+          <Route element={<PublicLayout />}>
+            <Route index path="/" element={<Home />} />
 
             <Route
-              path="/settings"
+              path="/signup"
               element={
-                <ProtectedRoute>
-                  <Settings />
-                </ProtectedRoute>
+                <PublicRoute>
+                  <Signup />
+                </PublicRoute>
               }
             />
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              }
+            />
+
+            <Route element={<MainLayout />}>
+              <Route element={<ContactLayout />}>
+                <Route
+                  index
+                  path="/contact"
+                  element={
+                    <ProtectedRoute>
+                      <Call />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/contact/:id"
+                  element={
+                    <ProtectedRoute>
+                      <ContactProfile />
+                    </ProtectedRoute>
+                  }
+                />
+              </Route>
+
+              <Route element={<AddContactLayout />}>
+                <Route
+                  index
+                  path="/add-contact"
+                  element={
+                    <ProtectedRoute>
+                      <AddContact />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/add-contact/:id"
+                  element={
+                    <ProtectedRoute>
+                      <UserProfile />
+                    </ProtectedRoute>
+                  }
+                />
+              </Route>
+
+              <Route element={<NotificationsLayout />}>
+                <Route
+                  path="/notifications"
+                  element={
+                    <ProtectedRoute>
+                      <Notifications />
+                    </ProtectedRoute>
+                  }
+                />
+              </Route>
+
+              <Route
+                path="/settings"
+                element={
+                  <ProtectedRoute>
+                    <Settings />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

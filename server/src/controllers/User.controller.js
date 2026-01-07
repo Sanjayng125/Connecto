@@ -5,6 +5,7 @@ import { User } from "../models/User.model.js";
 import {
   comparePassword,
   generateTokens,
+  getCookieOptions,
   hashPassword,
   verifyRefreshToken,
 } from "../utils/auth.js";
@@ -64,12 +65,7 @@ export const signup = asyncHandler(async (req, res) => {
     })
   );
 
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-  });
+  res.cookie("refreshToken", refreshToken, getCookieOptions());
 
   res
     .status(201)
@@ -115,12 +111,7 @@ export const login = asyncHandler(async (req, res) => {
   userExists.lastSeen = new Date();
   await userExists.save();
 
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-  });
+  res.cookie("refreshToken", refreshToken, getCookieOptions());
 
   res
     .status(200)
@@ -159,12 +150,7 @@ export const refreshToken = asyncHandler(async (req, res) => {
     })
   );
 
-  res.cookie("refreshToken", newRefreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-  });
+  res.cookie("refreshToken", refreshToken, getCookieOptions());
 
   res.status(200).json({
     accessToken: newAccessToken,

@@ -1,6 +1,5 @@
 import {
   Phone,
-  Video,
   Users,
   Shield,
   Zap,
@@ -12,7 +11,7 @@ import { Link } from "react-router";
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-linear-to-br from-yellow-50 via-white to-orange-50">
+    <div className="w-full min-h-dvh bg-linear-to-br from-yellow-50 via-white to-orange-50">
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 left-10 w-72 h-72 bg-yellow-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
@@ -147,7 +146,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <div className="group p-8 bg-linear-to-br from-yellow-50 to-orange-50 rounded-2xl hover:shadow-xl transition-all hover:-translate-y-2">
               <div className="w-14 h-14 bg-linear-to-br from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
                 <Phone className="text-white" size={28} />
@@ -210,19 +209,6 @@ const Home = () => {
               <p className="text-gray-600 leading-relaxed">
                 Connect with anyone, anywhere in the world. No borders, no
                 limitations.
-              </p>
-            </div>
-
-            <div className="group p-8 bg-linear-to-br from-indigo-50 to-blue-50 rounded-2xl hover:shadow-xl transition-all hover:-translate-y-2">
-              <div className="w-14 h-14 bg-linear-to-br from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
-                <Video className="text-white" size={28} />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                Coming Soon: Video
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                Video calling feature is coming soon. Stay tuned for
-                face-to-face conversations.
               </p>
             </div>
           </div>

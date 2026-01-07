@@ -2,7 +2,6 @@ import { useParams, useNavigate } from "react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Phone,
-  Video,
   Trash2,
   Star,
   ArrowLeft,
@@ -41,7 +40,7 @@ const ContactProfile = () => {
     onSuccess: () => {
       toast.success("Contact removed successfully");
       queryClient.invalidateQueries({ queryKey: ["contacts"] });
-      navigate("/");
+      navigate("/contact");
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || "Failed to remove contact");
@@ -92,10 +91,6 @@ const ContactProfile = () => {
       userId: contact.contactId,
       username: contact.contactUser.username,
     });
-  };
-
-  const handleVideoCall = () => {
-    // TODO: Implement video call functionality
   };
 
   if (isLoading) {
@@ -175,7 +170,7 @@ const ContactProfile = () => {
 
             <div className="mt-3">
               {isEditingNickname ? (
-                <div className="flex items-center justify-center gap-2">
+                <div className="flex items-center justify-center gap-2 flex-wrap">
                   <input
                     type="text"
                     value={nickname}
@@ -184,19 +179,21 @@ const ContactProfile = () => {
                     className="px-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
                     autoFocus
                   />
-                  <button
-                    onClick={() => updateNicknameMutation.mutate(nickname)}
-                    disabled={updateNicknameMutation.isPending}
-                    className="px-4 py-1 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 disabled:bg-gray-400"
-                  >
-                    Save
-                  </button>
-                  <button
-                    onClick={() => setIsEditingNickname(false)}
-                    className="px-4 py-1 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
-                  >
-                    Cancel
-                  </button>
+                  <div className="flex items-center justify-center gap-2">
+                    <button
+                      onClick={() => updateNicknameMutation.mutate(nickname)}
+                      disabled={updateNicknameMutation.isPending}
+                      className="px-4 py-1 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 disabled:bg-gray-400"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => setIsEditingNickname(false)}
+                      className="px-4 py-1 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div className="flex items-center justify-center gap-2">
@@ -222,22 +219,13 @@ const ContactProfile = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 lg:gap-4 mb-4 max-sm:grid-cols-1">
+          <div className="w-full flex justify-center mb-4">
             <button
               onClick={handleCall}
-              className="flex items-center justify-center gap-3 p-3 bg-yellow-600 hover:bg-yellow-700 text-white rounded-xl transition-colors shadow-md"
+              className="flex items-center justify-center gap-3 p-3 px-8 bg-green-600 hover:bg-green-700 text-white rounded-xl transition-colors shadow-md"
             >
               <Phone size={24} />
-              <span className="font-semibold">Voice Call</span>
-            </button>
-
-            <button
-              onClick={handleVideoCall}
-              className="flex items-center justify-center gap-3 p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
-              disabled
-            >
-              <Video size={24} />
-              <span className="font-semibold">Video Call(🚧)</span>
+              <span className="font-semibold">Call</span>
             </button>
           </div>
 
