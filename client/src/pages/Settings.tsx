@@ -44,11 +44,11 @@ const Settings = () => {
 
   const logoutMutation = useMutation({
     mutationFn: authApi.logout,
-    onSuccess: () => {
+    onSuccess: (res) => {
       clearAuth();
       queryClient.clear();
       navigate("/login");
-      toast.success("Logged out successfully");
+      toast.success(res?.message || "Logged out successfully");
     },
     onError: () => {
       toast.error("Failed to logout");
@@ -277,17 +277,17 @@ const Settings = () => {
         <button
           onClick={() => logoutMutation.mutate()}
           disabled={logoutMutation.isPending}
-          className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:bg-gray-400 font-medium"
+          className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:bg-gray-400 font-medium text-sm"
         >
           {logoutMutation.isPending ? (
             <>
-              <Loader2 size={20} className="animate-spin" />
+              <Loader2 className="animate-spin size-5" />
               Logging out...
             </>
           ) : (
             <>
-              <LogOut size={20} />
-              Logout
+              <LogOut className="size-5" />
+              Logout from all devices
             </>
           )}
         </button>

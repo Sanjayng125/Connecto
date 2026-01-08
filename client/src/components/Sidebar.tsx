@@ -1,7 +1,6 @@
 import { Bell, LogOut, Phone, Settings, User, UserPlus } from "lucide-react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useLocation, Link } from "react-router";
-import { authApi } from "../api/auth";
 import { useAuthStore } from "../store/useAuthStore";
 import { toast } from "react-toastify";
 import { useState } from "react";
@@ -11,26 +10,22 @@ export const Sidebar = () => {
   const { clearAuth, user } = useAuthStore();
   const queryClient = useQueryClient();
   const pathname = useLocation().pathname;
-  const isContactSelected = useLocation().pathname.startsWith("/contact/");
+  const hideSideBar = ["/contact/", "/add-contact/"].some((path) =>
+    pathname.startsWith(path)
+  );
   const [showAvatarModal, setShowAvatarModal] = useState(false);
 
-  const logoutMutation = useMutation({
-    mutationFn: authApi.logout,
-    onSuccess: (res) => {
-      clearAuth();
-      queryClient.clear();
-      navigate("/login");
-      toast.success(res?.message || "Logged out successfully.");
-    },
-    onError: (error) => {
-      toast.error(error.message || "Failed to logout. Please try again.");
-    },
-  });
+  const handleLogout = () => {
+    clearAuth();
+    queryClient.clear();
+    navigate("/login");
+    toast.success("Logged from this device successfully.");
+  };
 
   return (
     <div
       className={`bg-linear-to-b from-yellow-700 to-yellow-800 flex flex-col items-center px-1 sm:px-2 md:px-3 py-6 space-y-8 ${
-        isContactSelected && "max-md:hidden"
+        hideSideBar && "max-md:hidden"
       }`}
     >
       <button
@@ -85,8 +80,7 @@ export const Sidebar = () => {
         <Settings />
       </Link>
       <button
-        onClick={() => logoutMutation.mutate()}
-        disabled={logoutMutation.isPending}
+        onClick={handleLogout}
         className="text-white cursor-pointer hover:scale-110 transition-transform p-2 hover:text-red-500"
       >
         <LogOut />
