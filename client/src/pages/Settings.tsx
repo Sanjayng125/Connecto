@@ -213,7 +213,7 @@ const Settings = () => {
             </div>
 
             {isEditingUsername ? (
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap">
                 <input
                   type="text"
                   value={newUsername}
@@ -222,24 +222,26 @@ const Settings = () => {
                   placeholder="Enter username"
                   autoFocus
                 />
-                <button
-                  onClick={handleSaveUsername}
-                  disabled={updateProfileMutation.isPending}
-                  className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors disabled:bg-gray-400"
-                >
-                  {updateProfileMutation.isPending ? (
-                    <Loader2 size={16} className="animate-spin" />
-                  ) : (
-                    <Save size={16} />
-                  )}
-                </button>
-                <button
-                  onClick={() => setIsEditingUsername(false)}
-                  disabled={updateProfileMutation.isPending}
-                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors"
-                >
-                  <X size={16} />
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleSaveUsername}
+                    disabled={updateProfileMutation.isPending}
+                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors disabled:bg-gray-400"
+                  >
+                    {updateProfileMutation.isPending ? (
+                      <Loader2 size={16} className="animate-spin" />
+                    ) : (
+                      <Save size={16} />
+                    )}
+                  </button>
+                  <button
+                    onClick={() => setIsEditingUsername(false)}
+                    disabled={updateProfileMutation.isPending}
+                    className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
               </div>
             ) : (
               <p className="text-gray-800 font-medium">{user.username}</p>

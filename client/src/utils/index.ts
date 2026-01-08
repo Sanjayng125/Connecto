@@ -5,8 +5,6 @@ export const formatTime = (dateString: string): string => {
     const now = new Date();
     const diffTime = now.getTime() - date.getTime();
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    const diffWeeks = Math.floor(diffDays / 7);
-    const diffMonths = Math.floor(diffDays / 30);
 
     const timeString = date.toLocaleTimeString(undefined, {
         hour: 'numeric',
@@ -14,21 +12,33 @@ export const formatTime = (dateString: string): string => {
         hour12: true,
     }).toLowerCase();
 
-    if (diffDays === 0) {
+    const today = new Date();
+    const isToday = today.toDateString() === date.toDateString();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    const isYesterday = yesterday.toDateString() === date.toDateString();
+
+    if (isToday) {
         return `Today, ${timeString}`;
-    } else if (diffDays === 1) {
+    } else if (isYesterday) {
         return `Yesterday, ${timeString}`;
     } else if (diffDays < 7) {
         return `${diffDays} days ago, ${timeString}`;
-    } else if (diffWeeks < 4) {
-        return `${diffWeeks} weeks ago, ${timeString}`;
-    } else if (diffMonths < 12) {
-        return `${diffMonths} months ago, ${timeString}`;
     } else {
-        const diffYears = Math.floor(diffDays / 365);
-        return `${diffYears} years ago, ${timeString}`;
+        const diffWeeks = Math.floor(diffDays / 7);
+        if (diffWeeks < 4) {
+            return `${diffWeeks} weeks ago, ${timeString}`;
+        } else {
+            const diffMonths = Math.floor(diffDays / 30);
+            if (diffMonths < 12) {
+                return `${diffMonths} months ago, ${timeString}`;
+            } else {
+                const diffYears = Math.floor(diffDays / 365);
+                return `${diffYears} years ago, ${timeString}`;
+            }
+        }
     }
-}
+};
 
 export const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
